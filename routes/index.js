@@ -5,7 +5,8 @@ var mysql = require('mysql');
 let connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  database: 'kevin_db'
+  password: 'yA631779',
+  database: 'omega-database'
 })
 connection.connect();
 connection.query(
@@ -14,9 +15,9 @@ connection.query(
     id int NOT NULL auto_increment,
       name varchar(50),
       version varchar(50),
+      priority varchar(50),
       date varchar(50),
       email varchar(50),
-      severity varchar(50),
       type varchar(50),
       description varchar(255),
       PRIMARY KEY (id)
@@ -26,16 +27,16 @@ connection.query(
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  return res.send({message: "wassup"});
+  return res.send({message: "Database Connected"});
 });
 
 router.post('/insert', (req, res, next) => {
   let body = req.body;
   try {
-    // body.name, body.version, body.date, body.email, body.severity, body.type, body.description
+    // body.name, body.version, body.date, body.email, body.priority, body.type, body.description
     connection.query(`
-    INSERT INTO Appdata(name, version, date, email, severity, type, description) 
-    VALUES('${body.name}', '${body.version}', '${body.date}', '${body.email}', '${body.severity}', '${body.type}', '${body.description}')
+    INSERT INTO Appdata(name, version, priority, email, date, type, description) 
+    VALUES('${body.name}', '${body.version}', '${body.priority}', '${body.email}', '${body.date}', '${body.type}', '${body.description}')
     `, (err, result) => {
       if(err) return res.json(err);;
       return res.json(result);
@@ -87,11 +88,11 @@ router.delete('/delete/:id', (req, res, next) => {
 router.patch('/update/:id', (req, res, next) => {
   let body = req.body;
   try {
-    // body.name, body.version, body.date, body.email, body.severity, body.type, body.description
+    // body.name, body.version, body.priority, body.email, body.date, body.type, body.description
     connection.query(`
       UPDATE Appdata
-      SET name='${body.name}', version='${body.version}', date='${body.date}', 
-      email='${body.email}', severity='${body.severity}', type='${body.type}', description='${body.description}'
+      SET name='${body.name}', version='${body.version}', priority='${body.priority}', 
+      email='${body.email}', date='${body.date}', type='${body.type}', description='${body.description}'
       WHERE id='${req.params.id}'
       `, (err, result) => {
         if (err) return res.json(err);;
