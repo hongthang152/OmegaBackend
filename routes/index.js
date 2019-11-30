@@ -70,6 +70,20 @@ router.get('/get/:id', (req, res, next) => {
   }
 })
 
+router.delete('/delete/:id', (req, res, next) => {
+  try {
+    connection.query(`
+      DELETE FROM Appdata 
+      WHERE id = ${req.params.id}
+    `, (err, result) => {
+      if(err) return res.json(err);
+      return res.json(result);
+    })
+  } catch (e) { 
+    return res.json(e);
+  }
+})
+
 router.patch('/update/:id', (req, res, next) => {
   let body = req.body;
   try {
